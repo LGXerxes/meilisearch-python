@@ -623,7 +623,11 @@ class Client:
             raise ValueError(
                 "An api key is required in the client or should be passed as an argument."
             )
-        if api_key_uid == "" or api_key_uid is None or self._valid_uuid(api_key_uid) is False:
+        if (
+            not api_key_uid
+            or api_key_uid is None
+            or self._valid_uuid(api_key_uid) is False
+        ):
             raise ValueError("An uid is required and must comply to the uuid4 format.")
         if not search_rules or search_rules == [""]:
             raise ValueError("The search_rules field is mandatory and should be defined.")
@@ -654,13 +658,10 @@ class Client:
         # Create Signature Hash
         signature = hmac.new(
             secret_encoded,
-            (header_encode + "." + payload_encode).encode(),
+            f"{header_encode}.{payload_encode}".encode(),
             hashlib.sha256,
         ).digest()
-        # Create JWT
-        jwt_token = header_encode + "." + payload_encode + "." + self._base64url_encode(signature)
-
-        return jwt_token
+        return f"{header_encode}.{payload_encode}.{self._base64url_encode(signature)}"
 
     @staticmethod
     def _base64url_encode(data: bytes) -> str:

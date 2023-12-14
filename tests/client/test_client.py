@@ -21,8 +21,7 @@ def test_client_timeout_set():
 
 
 def test_client_timeout_not_set():
-    default_timeout = None
     client = meilisearch.Client(BASE_URL, MASTER_KEY)
     response = client.health()
-    assert client.config.timeout == default_timeout
+    assert client.config.timeout is None
     assert response["status"] == "available"

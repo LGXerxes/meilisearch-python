@@ -56,12 +56,10 @@ class Key(_KeyBase):
         @pydantic.field_validator("created_at", mode="before")  # type: ignore[attr-defined]
         @classmethod
         def validate_created_at(cls, v: str) -> datetime:  # pylint: disable=invalid-name
-            converted = iso_to_date_time(v)
-
-            if not converted:
+            if converted := iso_to_date_time(v):
+                return converted
+            else:
                 raise ValueError("created_at is required")  # pragma: no cover
-
-            return converted
 
         @pydantic.field_validator("updated_at", mode="before")  # type: ignore[attr-defined]
         @classmethod
@@ -75,12 +73,10 @@ class Key(_KeyBase):
         @pydantic.validator("created_at", pre=True)
         @classmethod
         def validate_created_at(cls, v: str) -> datetime:  # pylint: disable=invalid-name
-            converted = iso_to_date_time(v)
-
-            if not converted:
+            if converted := iso_to_date_time(v):
+                return converted
+            else:
                 raise ValueError("created_at is required")
-
-            return converted
 
         @pydantic.validator("updated_at", pre=True)
         @classmethod
