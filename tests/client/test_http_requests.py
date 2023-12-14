@@ -26,5 +26,5 @@ def test_get_headers_with_multiple_user_agent():
     assert http.headers["Authorization"] == f"Bearer {MASTER_KEY}"
     assert (
         http.headers["User-Agent"]
-        == qualified_version() + ";Meilisearch Package1 (v1.1.1);Meilisearch Package2 (v2.2.2)"
+        == f"{qualified_version()};Meilisearch Package1 (v1.1.1);Meilisearch Package2 (v2.2.2)"
     )

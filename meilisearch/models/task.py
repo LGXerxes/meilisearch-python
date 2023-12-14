@@ -27,11 +27,10 @@ class Task(CamelBase):
         @pydantic.field_validator("enqueued_at", mode="before")  # type: ignore[attr-defined]
         @classmethod
         def validate_enqueued_at(cls, v: str) -> datetime:  # pylint: disable=invalid-name
-            converted = iso_to_date_time(v)
-
-            if not converted:  # pragma: no cover
+            if converted := iso_to_date_time(v):
+                return converted
+            else:
                 raise ValueError("enqueued_at is required")
-            return converted
 
         @pydantic.field_validator("started_at", mode="before")  # type: ignore[attr-defined]
         @classmethod
@@ -52,12 +51,10 @@ class Task(CamelBase):
         @pydantic.validator("enqueued_at", pre=True)
         @classmethod
         def validate_enqueued_at(cls, v: str) -> datetime:  # pylint: disable=invalid-name
-            converted = iso_to_date_time(v)
-
-            if not converted:
+            if converted := iso_to_date_time(v):
+                return converted
+            else:
                 raise ValueError("enqueued_at is required")
-
-            return converted
 
         @pydantic.validator("started_at", pre=True)
         @classmethod
@@ -86,24 +83,20 @@ class TaskInfo(CamelBase):
         @pydantic.field_validator("enqueued_at", mode="before")  # type: ignore[attr-defined]
         @classmethod
         def validate_enqueued_at(cls, v: str) -> datetime:  # pylint: disable=invalid-name
-            converted = iso_to_date_time(v)
-
-            if not converted:  # pragma: no cover
+            if converted := iso_to_date_time(v):
+                return converted
+            else:
                 raise ValueError("enqueued_at is required")
-
-            return converted
 
     else:  # pragma: no cover
 
         @pydantic.validator("enqueued_at", pre=True)
         @classmethod
         def validate_enqueued_at(cls, v: str) -> datetime:  # pylint: disable=invalid-name
-            converted = iso_to_date_time(v)
-
-            if not converted:
+            if converted := iso_to_date_time(v):
+                return converted
+            else:
                 raise ValueError("enqueued_at is required")
-
-            return converted
 
 
 class TaskResults:

@@ -35,7 +35,7 @@ class HttpRequests:
         if content_type:
             self.headers["Content-Type"] = content_type
         try:
-            request_path = self.config.url + "/" + path
+            request_path = f"{self.config.url}/{path}"
             if http_method.__name__ == "get":
                 request = http_method(
                     request_path,
@@ -105,9 +105,7 @@ class HttpRequests:
 
     @staticmethod
     def __to_json(request: requests.Response) -> Any:
-        if request.content == b"":
-            return request
-        return request.json()
+        return request if request.content == b"" else request.json()
 
     @staticmethod
     def __validate(request: requests.Response) -> Any:
